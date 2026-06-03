@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<title>Invitation</title>
+<style>
+    body {
+        background-color: black;
+        color: #00ff00;
+        font-family: "Courier New", monospace;
+        font-size: 24px;
+        padding: 40px;
+        white-space: pre-wrap;
+    }
+    .cursor {
+        display: inline-block;
+        width: 10px;
+        background-color: #00ff00;
+        animation: blink 0.8s infinite;
+    }
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+</style>
+</head>
+<body>
+
+<div id="text"></div><span class="cursor"></span>
+
+<script>
+const message = "I er hermed inviteret til mr. X arrangement.\nSkriv dato til mrx@gmail.com";
+let i = 0;
+
+function typeWriter() {
+    if (i < message.length) {
+        document.getElementById("text").innerHTML += message.charAt(i);
+        i++;
+        setTimeout(typeWriter, 50);
+    }
+}
+
+typeWriter();
+</script>
+
+</body>
+</html>
