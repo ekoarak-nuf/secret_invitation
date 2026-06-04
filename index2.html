@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KILO-ALFA-ROMEO</title>
+<style>
+    body {
+        background: black;
+        color: #00FF55;
+        font-family: "Courier New", monospace;
+        padding: 20px;
+        font-size: 1.1rem;
+        white-space: pre-line;
+    }
+    #inputBox {
+        margin-top: 20px;
+        width: 100%;
+        padding: 10px;
+        background: black;
+        border: 1px solid #00FF55;
+        color: #00FF55;
+        font-family: inherit;
+        font-size: 1.1rem;
+    }
+    .hidden { display: none; }
+
+    #barContainer {
+        width: 100%;
+        height: 20px;
+        border: 1px solid #00FF55;
+        margin-top: 10px;
+    }
+    #bar {
+        height: 100%;
+        width: 0%;
+        background: #00FF55;
+    }
+</style>
+</head>
+<body>
+
+<div id="screen"></div>
+<input id="inputBox" class="hidden" autocomplete="off" />
+
+<script>
+let step = 0;
+const screen = document.getElementById("screen");
+const inputBox = document.getElementById("inputBox");
+
+
+// ✔ STABIL TYPEWRITER – OVERSKRIVNING
+function typeText(text) {
+    return new Promise(resolve => {
+        screen.innerHTML = ""; 
+        let i = 0;
+        let speed = 70;
+
+        function typing() {
+            if (i < text.length) {
+                screen.innerHTML += text[i];
+                i++;
+                setTimeout(typing, speed);
+            } else resolve();
+        }
+        typing();
+    });
+}
+
+
+// ✔ STABIL TYPEWRITER – APPEND
+function appendTypeText(text) {
+    return new Promise(resolve => {
+        let old = screen.innerHTML;   // gem det gamle
+        screen.innerHTML = old;       // skriv det gamle instant
+
+        let i = 0;
+        let speed = 70;
+
+        function typing() {
+            if (i < text.length) {
+                screen.innerHTML += text[i];  // skriv kun det nye langsomt
+                i++;
+                setTimeout(typing, speed);
+            } else resolve();
+        }
+        typing();
+    });
+}
+
+
+
+
+
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+async function nextStep() {
+    step++;
+
+    // STEP 1
+    if (step === 1) {
+	await wait(1500);
+        await typeText(
+`I ER HERMED BLEVET UDVALGT TIL DET TOPHEMMELIGE ARRANGEMENT KILO-ALFA-ROMEO AF MR. X.
+FOR AT FORTSÆTTE SKAL I BEKRÆFTE JERES FULDE DEDIKATION, OG AT I VIL YDE JERES MAKSIMALE INDSATS.\n\n BEKRÆFT VED AT SKRIVE "JA".`
+        );
+        inputBox.classList.remove("hidden");
+    }
+
+    // STEP 2
+    if (step === 2) {
+        inputBox.classList.add("hidden");
+
+        await typeText(
+`BEKRÆFTELSE MODTAGET…\n\n NÆSTE TRIN KRÆVER YDERLIGERE IDENTIFIKATION.
+HOLD VENLIGST ØJET OP TIL KAMERAET FOR AT SKANNE IRIS.`
+        );
+
+        await wait(2000);
+        await typeText("SKANNER…");
+        await wait(1200);
+
+        screen.innerHTML = "SKANNER…\n\n";
+
+        let barContainer = document.createElement("div");
+        barContainer.id = "barContainer";
+        let bar = document.createElement("div");
+        bar.id = "bar";
+        barContainer.appendChild(bar);
+        screen.appendChild(barContainer);
+
+        let width = 0;
+        await new Promise(resolve => {
+            let interval = setInterval(() => {
+                width += 2;
+                bar.style.width = width + "%";
+                if (width >= 100) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, 100);
+        });
+	
+	await wait(1000);
+        await appendTypeText("\n\nGODKENDT.");
+
+        await wait(1500);
+        await nextStep();
+    }
+
+    // STEP 3
+    if (step === 3) {
+        await typeText("PÅBEGYNDER VALIDERING...\n");
+
+        await wait(500);
+        await appendTypeText("\nTJEKKER OM DEN FULDE DEDIKATIONS ATTEST ER AFGIVET… ");
+        await wait(2000);
+        await appendTypeText("\nBEKRÆFTET.\n");
+
+        await wait(500);
+        await appendTypeText("\nTJEKKER OM IDENTIFIKATION ER GODKENDT… ");
+        await wait(2000);
+        await appendTypeText("\nBEKRÆFTET.\n");
+
+        await wait(100);
+        await nextStep();
+    }
+
+    // STEP 4
+    if (step === 4) {
+  // Første del
+	nextStep();
+        await typeText("VELKOMMEN HR OG FRU FABRICIUS.");
+	await wait(100);
+	await appendTypeText("\nFOR AT MODTAGE DE KLASSIFICEREDE OPLYSNINGER PÅ EN SIKKER KANAL, SKAL I AFGI");
+
+        await wait(100);
+
+        // Guld V
+        screen.innerHTML += '<b><span style="color:gold">V</span></b>';
+
+        // Fortsæt
+        await appendTypeText("E EN KORRESPONDANCE TIL MRX.TOP.SECRET.AND.CLASSIFIED@GMAIL.COM, MED EN VEDHÆFTET DATO, HVOR ARRANGEMENTET KAN FOREGÅ.\n");
+
+        // Guld S
+        screen.innerHTML += '<b><span style="color:gold">S</span></b>';
+
+        await appendTypeText("Å VIL I MODTAGE EN BEKRÆFTELSE OG YDERLIGERE OPLYSNINGER DEREFTER…\n\nAF SIKKERHEDSMÆSSIGE ÅRS");
+
+        // Guld A
+        screen.innerHTML += '<b><span style="color:gold">A</span></b>';
+
+        await appendTypeText("GER VIL DENNE MOBIL SELVDESTRUERER OM 10 SEKUNDER…\n\n");
+
+
+        // Countdown
+        screen.innerHTML += 'SELVDESTRUERER OM: <span id="countNum">10</span>\n';
+
+        let counter = 10;
+        const countNum = document.getElementById("countNum");
+
+        let countdownInterval = setInterval(() => {
+            counter--;
+            countNum.textContent = counter;
+
+if (counter < 1) {
+    clearInterval(countdownInterval);
+
+    // Når countdown rammer 0 → start auto-delete
+    let fullText = screen.innerHTML; 
+    let deleteIndex = fullText.length;
+
+    let deleteInterval = setInterval(() => {
+        deleteIndex--;
+        screen.innerHTML = fullText.slice(0, deleteIndex);
+
+        if (deleteIndex <= 0) {
+            clearInterval(deleteInterval);
+
+            // Når alt er slettet → skriv fejlbesked
+            screen.innerHTML = "ERROR 404: NOTHING FOUND";
+        }
+    }, 100); // hastighed på sletning
+}
+
+
+        }, 1000);
+    }
+}
+
+// INPUT HANDLER
+inputBox.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        if (inputBox.value.trim().toUpperCase() === "JA") {
+            inputBox.value = "";
+            nextStep();
+        } else {
+            screen.innerHTML += `\n\nUGYLDIGT SVAR. SKRIV "JA".`;
+        }
+    }
+});
+
+nextStep();
+</script>
+
+</body>
+</html>
